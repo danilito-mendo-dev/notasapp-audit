@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}NotasApp{% endblock %} · NotasApp</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a class="brand" href="{{ url_for('index') }}">📝 NotasApp</a>
+      <nav>
+        {% if g.user %}
+          <a href="{{ url_for('index') }}">Mis notas</a>
+          <a href="{{ url_for('note_new') }}">Nueva nota</a>
+          <a href="{{ url_for('profile', user_id=g.user.id) }}">{{ g.user.username }}</a>
+          {% if g.user.is_admin %}<a href="{{ url_for('admin_panel') }}">Admin</a>{% endif %}
+          <form class="inline" method="post" action="{{ url_for('logout') }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button class="link-button" type="submit">Cerrar sesión</button>
+          </form>
+        {% else %}
+          <a href="{{ url_for('login') }}">Iniciar sesión</a>
+          <a href="{{ url_for('register') }}">Registrarse</a>
+        {% endif %}
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, message in messages %}
+        <div class="flash flash-{{ category }}">{{ message }}</div>
+      {% endfor %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="container footer">NotasApp · proyecto de práctica con Flask + SQLite</footer>
+</body>
+</html>

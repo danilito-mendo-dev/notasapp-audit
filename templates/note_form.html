@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Editar nota' if note else 'Nueva nota' }}{% endblock %}
+{% block content %}
+<div class="card">
+  <h1>{{ 'Editar nota' if note else 'Nueva nota' }}</h1>
+  <form method="post">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <label>Título
+      <input name="title" required maxlength="200"
+             value="{{ request.form.title if request.method == 'POST' else (note.title if note else '') }}">
+    </label>
+    <label>Contenido
+      <textarea name="content" rows="12">{{ request.form.content if request.method == 'POST' else (note.content if note else '') }}</textarea>
+    </label>
+    <label class="checkbox">
+      <input type="checkbox" name="is_public" value="1"
+             {% if (request.method == 'POST' and request.form.is_public) or (request.method != 'POST' and note and note.is_public) %}checked{% endif %}>
+      Hacer pública (otros usuarios podrán verla y comentarla)
+    </label>
+    <div class="actions">
+      <button class="btn" type="submit">Guardar</button>
+      <a class="btn btn-secondary"
+         href="{{ url_for('note_detail', note_id=note.id) if note else url_for('index') }}">Cancelar</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

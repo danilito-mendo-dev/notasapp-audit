@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Administración{% endblock %}
+{% block content %}
+<div class="card">
+  <h1>Panel de administración</h1>
+  <p class="muted">Borrar un usuario elimina también todas sus notas y comentarios.</p>
+  <table>
+    <thead>
+      <tr><th>ID</th><th>Usuario</th><th>Correo</th><th>Rol</th><th>Notas</th><th>Alta</th><th></th></tr>
+    </thead>
+    <tbody>
+      {% for u in users %}
+        <tr>
+          <td>{{ u.id }}</td>
+          <td><a href="{{ url_for('profile', user_id=u.id) }}">{{ u.username }}</a></td>
+          <td>{{ u.email }}</td>
+          <td>{{ 'Admin' if u.is_admin else 'Usuario' }}</td>
+          <td>{{ u.note_count }}</td>
+          <td class="small">{{ u.created_at }}</td>
+          <td>
+            {% if u.id != g.user.id %}
+              <form class="inline" method="post" action="{{ url_for('admin_delete_user', user_id=u.id) }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button class="btn btn-danger btn-small" type="submit">Borrar</button>
+              </form>
+            {% else %}
+              <span class="muted small">(tú)</span>
+            {% endif %}
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

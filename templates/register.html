@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Registro{% endblock %}
+{% block content %}
+<div class="card narrow">
+  <h1>Crear cuenta</h1>
+  <form method="post">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <label>Usuario
+      <input name="username" required minlength="3" maxlength="30"
+             pattern="[A-Za-z0-9_]+" value="{{ request.form.username }}" autocomplete="username">
+    </label>
+    <label>Correo
+      <input type="email" name="email" required value="{{ request.form.email }}" autocomplete="email">
+    </label>
+    <label>Contraseña (mín. 8 caracteres)
+      <input type="password" name="password" required minlength="8" autocomplete="new-password">
+    </label>
+    <label>Repite la contraseña
+      <input type="password" name="confirm" required minlength="8" autocomplete="new-password">
+    </label>
+    <button class="btn" type="submit">Registrarme</button>
+  </form>
+  <p class="muted">¿Ya tienes cuenta? <a href="{{ url_for('login') }}">Inicia sesión</a></p>
+</div>
+{% endblock %}

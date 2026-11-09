@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Iniciar sesión{% endblock %}
+{% block content %}
+<div class="card narrow">
+  <h1>Iniciar sesión</h1>
+  <form method="post">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <label>Usuario
+      <input name="username" required autofocus autocomplete="username">
+    </label>
+    <label>Contraseña
+      <input type="password" name="password" required autocomplete="current-password">
+    </label>
+    <button class="btn" type="submit">Entrar</button>
+  </form>
+  <p class="muted">¿No tienes cuenta? <a href="{{ url_for('register') }}">Regístrate</a></p>
+</div>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Error {{ error.code }}{% endblock %}
+{% block content %}
+<div class="card narrow center">
+  <h1>Error {{ error.code }}</h1>
+  <p>
+    {% if error.code == 404 %}La página o nota que buscas no existe.
+    {% elif error.code == 403 %}No tienes permiso para hacer esto.
+    {% else %}{{ error.description }}{% endif %}
+  </p>
+  <a class="btn" href="{{ url_for('index') }}">Volver al inicio</a>
+</div>
+{% endblock %}

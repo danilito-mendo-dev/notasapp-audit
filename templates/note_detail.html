@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}{{ note.title }}{% endblock %}
+{% block content %}
+<article class="card">
+  <div class="section-head">
+    <h1>{{ note.title }}</h1>
+    {% if note.is_public %}<span class="badge">Pública</span>{% else %}<span class="badge badge-private">Privada</span>{% endif %}
+  </div>
+  <p class="meta">
+    por <a href="{{ url_for('profile', user_id=note.user_id) }}">{{ note.author }}</a>
+    · creada {{ note.created_at }} · editada {{ note.updated_at }}
+  </p>
+  {# El contenido se escapa automáticamente: se muestra como texto, no como HTML #}
+  <div class="note-content">{{ note.content }}</div>
+
+  {% if note.user_id == g.user.id %}
+    <div class="actions">
+      <a class="btn" href="{{ url_for('note_edit', note_id=note.id) }}">Editar</a>
+      <form class="inline" method="post" action="{{ url_for('note_delete', note_id=note.id) }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button class="btn btn-danger" type="submit">Borrar</button>
+      </form>
+    </div>
+  {% endif %}
+</article>
+
+<section class="card">
+  <h2>Comentarios ({{ comments|length }})</h2>
+  {% for c in comments %}
+    <div class="comment">
+      <div class="meta">
+        <a href="{{ url_for('profile', user_id=c.user_id) }}">{{ c.username }}</a> · {{ c.created_at }}
+        {% if g.user.id in (c.user_id, note.user_id) %}
+          <form class="inline" method="post" action="{{ url_for('comment_delete', comment_id=c.id) }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button class="link-button danger" type="submit">borrar</button>
+          </form>
+        {% endif %}
+      </div>
+      {# safe_html limpia el HTML y deja solo las etiquetas permitidas #}
+      <div class="comment-body">{{ c.body|safe_html }}</div>
+    </div>
+  {% else %}
+    <p class="muted">Todavía no hay comentarios.</p>
+  {% endfor %}
+
+  <form method="post" action="{{ url_for('comment_add', note_id=note.id) }}">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <label>Añadir comentario
+      <textarea name="body" rows="3" maxlength="2000" required
+                placeholder="Puedes usar <b>negrita</b>, <i>cursiva</i>…"></textarea>
+    </label>
+    <p class="muted small">Etiquetas permitidas:
+      {% for t in allowed_tags %}<code>&lt;{{ t }}&gt;</code> {% endfor %}
+    </p>
+    <button class="btn" type="submit">Comentar</button>
+  </form>
+</section>
+{% endblock %}

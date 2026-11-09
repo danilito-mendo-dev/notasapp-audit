@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Mis notas{% endblock %}
+
+{% macro note_card(note, show_author=false) %}
+  <a class="note-card" href="{{ url_for('note_detail', note_id=note.id) }}">
+    <h3>{{ note.title }}</h3>
+    <p>{{ note.content[:140] }}{% if note.content|length > 140 %}…{% endif %}</p>
+    <div class="meta">
+      {% if note.is_public %}<span class="badge">Pública</span>{% endif %}
+      {% if show_author %}por {{ note.author }} · {% endif %}{{ note.updated_at }}
+    </div>
+  </a>
+{% endmacro %}
+
+{% block content %}
+<form class="search" method="get" action="{{ url_for('index') }}">
+  <input type="search" name="q" value="{{ q }}" placeholder="Buscar por título o contenido…">
+  <button class="btn" type="submit">Buscar</button>
+  {% if q %}<a class="btn btn-secondary" href="{{ url_for('index') }}">Limpiar</a>{% endif %}
+</form>
+
+{% if q %}
+  <h1>Resultados para “{{ q }}”</h1>
+  {% if notes %}
+    <div class="grid">{% for note in notes %}{{ note_card(note, note.user_id != g.user.id) }}{% endfor %}</div>
+  {% else %}
+    <p class="muted">No se encontró ninguna nota.</p>
+  {% endif %}
+{% else %}
+  <div class="section-head">
+    <h1>Mis notas</h1>
+    <a class="btn" href="{{ url_for('note_new') }}">+ Nueva nota</a>
+  </div>
+  {% if notes %}
+    <div class="grid">{% for note in notes %}{{ note_card(note) }}{% endfor %}</div>
+  {% else %}
+    <p class="muted">Aún no tienes notas. ¡Crea la primera!</p>
+  {% endif %}
+
+  {% if public_notes %}
+    <h2>Notas públicas de otros usuarios</h2>
+    <div class="grid">{% for note in public_notes %}{{ note_card(note, true) }}{% endfor %}</div>
+  {% endif %}
+{% endif %}
+{% endblock %}

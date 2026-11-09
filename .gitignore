@@ -1,0 +1,4 @@
+venv/
+__pycache__/
+notasapp.db
+.secret_key

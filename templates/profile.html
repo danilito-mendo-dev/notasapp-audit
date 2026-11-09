@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}{{ profile_user.username }}{% endblock %}
+{% block content %}
+<div class="card narrow">
+  <h1>{{ profile_user.username }}
+    {% if profile_user.is_admin %}<span class="badge">Admin</span>{% endif %}
+  </h1>
+  <dl class="profile">
+    <dt>Usuario</dt><dd>{{ profile_user.username }}</dd>
+    <dt>Correo</dt>
+    <dd>{% if show_email %}{{ profile_user.email }}{% else %}<span class="muted">(privado)</span>{% endif %}</dd>
+    <dt>Miembro desde</dt><dd>{{ profile_user.created_at }}</dd>
+  </dl>
+</div>
+
+<div class="card narrow">
+  <h2>Notas públicas</h2>
+  {% if public_notes %}
+    <ul class="plain-list">
+      {% for n in public_notes %}
+        <li><a href="{{ url_for('note_detail', note_id=n.id) }}">{{ n.title }}</a>
+          <span class="muted small">· {{ n.updated_at }}</span></li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="muted">Sin notas públicas.</p>
+  {% endif %}
+</div>
+{% endblock %}
