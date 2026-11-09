@@ -1,0 +1,9 @@
+id,finding,vector
+F-01,CWE-489/94 + CWE-605 depurador Werkzeug activo y app en 0.0.0.0,CVSS:3.1/AV:A/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H
+F-02,CWE-307 login sin limite de intentos ni bloqueo,CVSS:3.1/AV:A/AC:H/PR:N/UI:N/S:U/C:H/I:L/A:N
+F-03,CWE-319/614 login y cookie de sesion por HTTP sin TLS,CVSS:3.1/AV:A/AC:H/PR:N/UI:R/S:U/C:H/I:L/A:N
+F-04,CWE-532 contrasena del admin impresa en la terminal,CVSS:3.1/AV:L/AC:H/PR:L/UI:N/S:U/C:H/I:H/A:N
+F-05,CWE-204 enumeracion de usuarios en /register,CVSS:3.1/AV:A/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N
+F-06,CWE-497 cabecera Server revela Werkzeug/Python,CVSS:3.1/AV:A/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N
+F-07,CWE-693 faltan cabeceras COOP/COEP/CORP/Permissions-Policy,CVSS:3.1/AV:A/AC:H/PR:N/UI:R/S:U/C:L/I:N/A:N
+F-08,CWE-778 intentos de login fallidos no se registran,CVSS:3.1/AV:A/AC:H/PR:N/UI:N/S:U/C:N/I:L/A:N

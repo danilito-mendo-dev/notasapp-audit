@@ -59,11 +59,14 @@ def nvd_cvss31(cve, key):
     hdr = {"apiKey": key} if key else {}
     j = get_json(NVD + urllib.parse.quote(cve), hdr)
     res = {"cvss31_score": "N/D", "cvss31_vector": "N/D", "cvss31_severity": "N/D",
-           "cvss31_source": "N/D", "nvd_cwe": "N/D", "nvd_status": "N/D"}
+           "cvss31_source": "N/D", "nvd_cwe": "N/D", "nvd_status": "N/D", "nvd_desc": "N/D"}
     if not j or not j.get("vulnerabilities"):
         return res
     c = j["vulnerabilities"][0]["cve"]
     res["nvd_status"] = c.get("vulnStatus", "N/D")
+    desc = next((d["value"] for d in c.get("descriptions", []) if d.get("lang") == "en"), "")
+    if desc:
+        res["nvd_desc"] = " ".join(desc.split())
     mets = c.get("metrics", {}).get("cvssMetricV31", [])
     pick = next((m for m in mets if m.get("type") == "Primary"), mets[0] if mets else None)
     if pick:
@@ -123,6 +126,7 @@ def main():
                 "epss_pct": f'{float(e["epss"])*100:.3f}' if e else "N/D",
                 "epss_percentile": f'{float(e["percentile"])*100:.1f}' if e else "N/D",
                 "epss_date": e.get("date", "N/D"), "in_kev": kv,
+                "nvd_desc": n.get("nvd_desc", "N/D"),
             })
 
     stamp = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
@@ -138,6 +142,9 @@ def main():
         md.append(f'| {o["package"]} | {o["version"]} | {o["cve"]} | {o["fixed_in"]} | '
                   f'{o["cvss31_score"]} {o["cvss31_severity"]} | `{o["cvss31_vector"]}` | '
                   f'{o["epss_pct"]} ({o["epss_percentile"]}) | {o["in_kev"]} |')
+    md += ["", "## Descripción NVD (para la nota de alcance)", ""]
+    for o in out:
+        md.append(f'- **{o["cve"]}** ({o["package"]}): {o["nvd_desc"]}')
     open(os.path.join(outdir, "cve_lookup.md"), "w").write("\n".join(md) + "\n")
     print("\n".join(md))
     print(f"\nGuardado en {outdir}/cve_lookup.(csv|json|md)")
