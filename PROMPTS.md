@@ -106,3 +106,12 @@ EPSS más alto). Actualiza requirements.txt a las versiones mínimas que corrige
 todos los avisos, manteniendo las versiones exactas (==). No cambies el código.
 Explica qué cambiaste y cómo comprobarlo con pip-audit.
 ```
+
+### R-03 — F-04: CWE-532, contraseña del administrador impresa en la terminal
+```text
+Hallazgo F-04: CWE-532 en app.py, función init_db() (líneas 154-159). La contraseña
+aleatoria del administrador se imprime en la terminal, donde queda en el historial
+y en capturas de pantalla. Corrígelo para que no se muestre nunca en la salida:
+guárdala en un archivo legible solo por el dueño (permisos 600) que git ignore.
+No cambies ningún otro comportamiento. Explica qué cambiaste y por qué.
+```

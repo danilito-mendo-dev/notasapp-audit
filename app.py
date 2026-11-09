@@ -153,11 +153,17 @@ def init_db():
                 (ADMIN_USERNAME, ADMIN_EMAIL, generate_password_hash(password)),
             )
             conn.commit()
+            # La contraseña NO se imprime en la terminal (CWE-532): se guarda
+            # en un archivo legible solo por el dueño, fuera de git.
+            pw_path = os.path.join(BASE_DIR, ".admin_password")
+            fd = os.open(pw_path, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
+            with os.fdopen(fd, "w") as f:
+                f.write(password + "\n")
             print("=" * 60)
             print(" Usuario administrador creado")
             print(f"   usuario:    {ADMIN_USERNAME}")
-            print(f"   contraseña: {password}")
-            print(" (Apúntala: no se volverá a mostrar)")
+            print(f"   contraseña: guardada en {pw_path} (permisos 600)")
+            print(" Léela con:  cat .admin_password  y luego bórrala.")
             print("=" * 60)
     finally:
         conn.close()

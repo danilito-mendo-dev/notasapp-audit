@@ -11,3 +11,4 @@ __pycache__/
 *.sqlite3
 instance/
 .secret_key
+.admin_password
