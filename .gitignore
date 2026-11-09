@@ -2,3 +2,12 @@ venv/
 __pycache__/
 notasapp.db
 .secret_key
+.venv/
+venv/
+__pycache__/
+*.pyc
+*.db
+*.sqlite
+*.sqlite3
+instance/
+.secret_key
