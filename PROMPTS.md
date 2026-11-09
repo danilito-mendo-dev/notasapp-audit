@@ -145,3 +145,12 @@ Hallazgo F-06: CWE-497. ZAP (alerta 10036) muestra que todas las respuestas llev
 Haz que la app envíe una cabecera Server genérica sin versiones. No cambies
 ningún otro comportamiento. Explica qué cambiaste y por qué.
 ```
+
+### R-07 — F-07: CWE-693, faltan cabeceras de aislamiento
+```text
+Hallazgo F-07: CWE-693. ZAP (alertas 90004 y 10063) indica que faltan las cabeceras
+Cross-Origin-Opener-Policy, Cross-Origin-Resource-Policy,
+Cross-Origin-Embedder-Policy y Permissions-Policy. Añádelas en security_headers()
+con valores restrictivos que no rompan la app (todo se sirve desde el mismo
+origen). No cambies ningún otro comportamiento. Explica qué cambiaste y por qué.
+```

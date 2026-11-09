@@ -265,6 +265,13 @@ def security_headers(response):
     response.headers["Content-Security-Policy"] = (
         "default-src 'self'; script-src 'none'; frame-ancestors 'none'; form-action 'self'"
     )
+    # Aislamiento entre orígenes y APIs del navegador desactivadas (CWE-693).
+    response.headers["Cross-Origin-Opener-Policy"] = "same-origin"
+    response.headers["Cross-Origin-Resource-Policy"] = "same-origin"
+    response.headers["Cross-Origin-Embedder-Policy"] = "require-corp"
+    response.headers["Permissions-Policy"] = (
+        "camera=(), microphone=(), geolocation=(), payment=(), usb=()"
+    )
     return response
 
 
