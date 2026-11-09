@@ -1,0 +1,19 @@
+# Parte 7 ANTES — escaneo desde Kali (red solo-anfitrion vboxnet0) contra Ubuntu
+# App v0 corriendo (HOST=0.0.0.0, DEBUG=True). UFW desactivado SOLO durante el escaneo.
+# Fecha: 2026-11-09 10:53 -0500 · comando: sudo nmap -sV 192.168.56.1
+
+$ ping -c 2 192.168.56.1
+64 bytes from 192.168.56.1: icmp_seq=1 ttl=64 time=0.440 ms
+64 bytes from 192.168.56.1: icmp_seq=2 ttl=64 time=0.356 ms
+2 packets transmitted, 2 received, 0% packet loss, time 1006ms
+
+Starting Nmap 7.991 ( https://nmap.org ) at 2026-11-09 10:53 -0500
+Nmap scan report for 192.168.56.1
+Host is up (0.00011s latency).
+Not shown: 999 closed tcp ports (reset)
+PORT     STATE SERVICE VERSION
+5000/tcp open  http    Werkzeug httpd 3.0.1 (Python 3.14.4)
+MAC Address: 0A:00:27:00:00:00 (Unknown)
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 6.92 seconds

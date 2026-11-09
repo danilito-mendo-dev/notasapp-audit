@@ -1,0 +1,54 @@
+### Escaneo v1 — 2026-11-09 10:57:52 — destino http://127.0.0.1:5000
+commit: b66a6a8
+== [1/6] ss -tulpn
+== [2/6] pip-audit (SCA)
+No known vulnerabilities found
+== [3/6] bandit (SAST)
+[main]	INFO	profile include tests: None
+[main]	INFO	profile exclude tests: None
+[main]	INFO	cli include tests: None
+[main]	INFO	cli exclude tests: None
+[main]	INFO	running on Python 3.14.4
+[text]	INFO	Text output written to file: scans/v1/bandit.txt
+[main]	INFO	profile include tests: None
+[main]	INFO	profile exclude tests: None
+[main]	INFO	cli include tests: None
+[main]	INFO	cli exclude tests: None
+[json]	INFO	JSON output written to file: scans/v1/bandit.json
+== [4/6] semgrep (p/owasp-top-ten + p/secrets)
+               
+               
+┌─────────────┐
+│ Scan Status │
+└─────────────┘
+  Scanning 18 files tracked by git with 595 Code rules:
+                                                                                                                        
+  Language      Rules   Files          Origin      Rules                                                                
+ ─────────────────────────────        ───────────────────                                                               
+  <multilang>      39      18          Community     595                                                                
+  html              1       9                                                                                           
+  python          147       3                                                                                           
+  bash              1       1                                                                                           
+                                                                                                                        
+                
+                
+┌──────────────┐
+│ Scan Summary │
+└──────────────┘
+✅ Scan completed successfully.
+ • Findings: 0 (0 blocking)
+ • Rules run: 188
+ • Targets scanned: 18
+ • Parsed lines: ~96.8%
+ • Scan skipped: 
+   ◦ Matching --exclude patterns: 42
+ • Scan was limited to files tracked by git
+ • For a detailed list of skipped files and lines, run semgrep with the --verbose flag
+Ran 188 rules on 18 files: 0 findings.
+(need more rules? `semgrep login` for additional free Semgrep Registry rules)
+
+If Semgrep missed a finding, please send us feedback to let us know!
+See https://semgrep.dev/docs/reporting-false-negatives/
+== [5/6] gitleaks (historial git)
+== [6/6] ZAP baseline (pasivo) contra http://127.0.0.1:5000
+== Resumen

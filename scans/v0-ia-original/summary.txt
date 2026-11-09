@@ -1,0 +1,5 @@
+pip-audit : 0 avisos únicos en 0 paquetes (salida cruda puede repetir IDs)
+bandit    : 3 hallazgos  MEDIUM=3
+semgrep   : 2 hallazgos
+gitleaks  : 0 secretos
+ZAP       : 11 alertas  Informational=6 Low=5

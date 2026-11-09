@@ -1,0 +1,27 @@
+Netid State  Recv-Q Send-Q                      Local Address:Port  Peer Address:PortProcess                             
+udp   UNCONN 0      0                                 0.0.0.0:43552      0.0.0.0:*    users:(("python3",pid=12650,fd=12))
+udp   UNCONN 0      0                                 0.0.0.0:60850      0.0.0.0:*    users:(("python3",pid=12650,fd=9)) 
+udp   UNCONN 0      0                              127.0.0.54:53         0.0.0.0:*                                       
+udp   UNCONN 0      0                           127.0.0.53%lo:53         0.0.0.0:*                                       
+udp   UNCONN 0      0                               127.0.0.1:323        0.0.0.0:*                                       
+udp   UNCONN 0      0                                 0.0.0.0:50420      0.0.0.0:*    users:(("python3",pid=12650,fd=23))
+udp   UNCONN 0      0                            192.168.56.1:3702       0.0.0.0:*    users:(("python3",pid=12650,fd=24))
+udp   UNCONN 0      0                         239.255.255.250:3702       0.0.0.0:*    users:(("python3",pid=12650,fd=22))
+udp   UNCONN 0      0                              172.17.0.1:3702       0.0.0.0:*    users:(("python3",pid=12650,fd=13))
+udp   UNCONN 0      0                         239.255.255.250:3702       0.0.0.0:*    users:(("python3",pid=12650,fd=11))
+udp   UNCONN 0      0                           192.168.0.105:3702       0.0.0.0:*    users:(("python3",pid=12650,fd=10))
+udp   UNCONN 0      0                         239.255.255.250:3702       0.0.0.0:*    users:(("python3",pid=12650,fd=8)) 
+udp   UNCONN 0      0                                       *:59112            *:*    users:(("python3",pid=12650,fd=15))
+udp   UNCONN 0      0                                   [::1]:323           [::]:*                                       
+udp   UNCONN 0      0                                       *:52217            *:*    users:(("python3",pid=12650,fd=18))
+udp   UNCONN 0      0                                       *:52529            *:*    users:(("python3",pid=12650,fd=26))
+udp   UNCONN 0      0        [fe80::800:27ff:fe00:0]%vboxnet0:3702          [::]:*    users:(("python3",pid=12650,fd=27))
+udp   UNCONN 0      0                      [ff02::c]%vboxnet0:3702          [::]:*    users:(("python3",pid=12650,fd=25))
+udp   UNCONN 0      0      [fe80::6472:dff:fe60:2fd6]%docker0:3702          [::]:*    users:(("python3",pid=12650,fd=19))
+udp   UNCONN 0      0                       [ff02::c]%docker0:3702          [::]:*    users:(("python3",pid=12650,fd=17))
+udp   UNCONN 0      0      [fe80::346b:bd4e:2ddb:4a79]%wlp3s0:3702          [::]:*    users:(("python3",pid=12650,fd=16))
+udp   UNCONN 0      0                        [ff02::c]%wlp3s0:3702          [::]:*    users:(("python3",pid=12650,fd=14))
+tcp   LISTEN 0      4096                        127.0.0.53%lo:53         0.0.0.0:*                                       
+tcp   LISTEN 0      4096                           127.0.0.54:53         0.0.0.0:*                                       
+tcp   LISTEN 0      4096                            127.0.0.1:42317      0.0.0.0:*                                       
+tcp   LISTEN 0      128                             127.0.0.1:5000       0.0.0.0:*    users:(("python",pid=21800,fd=4))  

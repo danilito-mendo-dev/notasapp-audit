@@ -1,0 +1,51 @@
+Run started:2026-11-09 14:21:50.067186+00:00
+
+Test results:
+>> Issue: [B104:hardcoded_bind_all_interfaces] Possible binding to all interfaces.
+   Severity: Medium   Confidence: Medium
+   CWE: CWE-605 (https://cwe.mitre.org/data/definitions/605.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b104_hardcoded_bind_all_interfaces.html
+   Location: ./app.py:33:7
+32	
+33	HOST = "0.0.0.0"   # 0.0.0.0 = accesible desde otras máquinas de tu red
+34	PORT = 5000
+
+--------------------------------------------------
+>> Issue: [B704:markupsafe_markup_xss] Potential XSS with ``markupsafe.Markup`` detected. Do not use ``Markup`` on untrusted data.
+   Severity: Medium   Confidence: High
+   CWE: CWE-79 (https://cwe.mitre.org/data/definitions/79.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b704_markupsafe_markup_xss.html
+   Location: ./app.py:236:11
+235	    y sin atributos (nada de onclick, style, href=javascript:...)."""
+236	    return Markup(nh3.clean(text, tags=ALLOWED_COMMENT_TAGS, attributes={}))
+237	
+
+--------------------------------------------------
+>> Issue: [B310:blacklist] Audit url open for permitted schemes. Allowing use of file:/ or custom schemes is often unexpected.
+   Severity: Medium   Confidence: High
+   CWE: CWE-22 (https://cwe.mitre.org/data/definitions/22.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_calls.html#b310-urllib-urlopen
+   Location: ./cve_lookup.py:26:17
+25	            req = urllib.request.Request(url, headers=h)
+26	            with urllib.request.urlopen(req, timeout=30) as r:  # FP esperado de bandit (B310): URL fija https
+27	                return json.load(r)
+
+--------------------------------------------------
+
+Code scanned:
+	Total lines of code: 595
+	Total lines skipped (#nosec): 0
+	Total potential issues skipped due to specifically being disabled (e.g., #nosec BXXX): 0
+
+Run metrics:
+	Total issues (by severity):
+		Undefined: 0
+		Low: 0
+		Medium: 3
+		High: 0
+	Total issues (by confidence):
+		Undefined: 0
+		Low: 0
+		Medium: 1
+		High: 2
+Files skipped (0):

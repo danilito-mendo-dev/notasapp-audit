@@ -1,0 +1,73 @@
+### Escaneo v0 — 2026-11-09 09:15:00 — destino http://127.0.0.1:5000
+commit: edb7b4b
+== [1/6] ss -tulpn
+== [2/6] pip-audit (SCA)
+No known vulnerabilities found
+== [3/6] bandit (SAST)
+[main]	INFO	profile include tests: None
+[main]	INFO	profile exclude tests: None
+[main]	INFO	cli include tests: None
+[main]	INFO	cli exclude tests: None
+[main]	INFO	running on Python 3.14.4
+[text]	INFO	Text output written to file: scans/v0/bandit.txt
+[main]	INFO	profile include tests: None
+[main]	INFO	profile exclude tests: None
+[main]	INFO	cli include tests: None
+[main]	INFO	cli exclude tests: None
+[json]	INFO	JSON output written to file: scans/v0/bandit.json
+== [4/6] semgrep (p/owasp-top-ten + p/secrets)
+               
+               
+┌─────────────┐
+│ Scan Status │
+└─────────────┘
+  Scanning 16 files tracked by git with 595 Code rules:
+                                                                                                                        
+  Language      Rules   Files          Origin      Rules                                                                
+ ─────────────────────────────        ───────────────────                                                               
+  <multilang>      39      16          Community     595                                                                
+  html              1       9                                                                                           
+  python          147       3                                                                                           
+  bash              1       1                                                                                           
+                                                                                                                        
+                
+                
+┌──────────────┐
+│ Scan Summary │
+└──────────────┘
+✅ Scan completed successfully.
+ • Findings: 2 (2 blocking)
+ • Rules run: 188
+ • Targets scanned: 16
+ • Parsed lines: ~96.2%
+ • Scan skipped: 
+   ◦ Matching --exclude patterns: 6
+ • Scan was limited to files tracked by git
+ • For a detailed list of skipped files and lines, run semgrep with the --verbose flag
+Ran 188 rules on 16 files: 2 findings.
+                   
+                   
+┌─────────────────┐
+│ 2 Code Findings │
+└─────────────────┘
+          
+    app.py
+    ❯❱ python.flask.security.audit.app-run-param-config.avoid_app_run_with_bad_host
+          ❰❰ Blocking ❱❱
+          Running flask app with host 0.0.0.0 could expose the server publicly.
+          Details: https://sg.run/eLby                                         
+                                                                               
+          572┆ app.run(host=HOST, port=PORT, debug=DEBUG)
+   
+    ❯❱ python.flask.security.audit.debug-enabled.debug-enabled
+          ❰❰ Blocking ❱❱
+          Detected Flask app with debug=True. Do not deploy to production with this flag enabled as it will   
+          leak sensitive information. Instead, consider using Flask configuration variables or setting 'debug'
+          using system environment variables.                                                                 
+          Details: https://sg.run/dKrd                                                                        
+                                                                                                              
+          572┆ app.run(host=HOST, port=PORT, debug=DEBUG)
+
+== [5/6] gitleaks (historial git)
+== [6/6] ZAP baseline (pasivo) contra http://127.0.0.1:5000
+== Resumen

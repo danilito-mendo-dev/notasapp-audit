@@ -1,0 +1,30 @@
+# Parte 7 DESPUES (B) — app v1 expuesta a proposito (NOTASAPP_HOST=0.0.0.0) detras de UFW
+# Kali 192.168.56.101 -> Ubuntu 192.168.56.1 · 2026-11-09 11:06 -0500 · sudo nmap -sV 192.168.56.1
+Starting Nmap 7.991 ( https://nmap.org ) at 2026-11-09 11:06 -0500
+Nmap scan report for 192.168.56.1
+Host is up (0.00025s latency).
+Not shown: 998 filtered tcp ports (no-response)
+PORT     STATE  SERVICE VERSION
+22/tcp   closed ssh
+5000/tcp open   upnp?
+1 service unrecognized despite returning data. (huella completa abajo)
+SF-Port5000-TCP:V=7.991%I=7%D=11/9%Time=6AF1EF8B%P=x86_64-pc-linux-gnu%r(G
+SF:etRequest,3AE,"HTTP/1\.1\x20302\x20FOUND\r\nServer:\x20NotasApp\r\nDate
+SF::\x20Mon,\x2009\x20Nov\x202026\x2016:06:36\x20GMT\r\nContent-Type:\x20t
+SF:ext/html;\x20charset=utf-8\r\nContent-Length:\x20199\r\nLocation:\x20/l
+SF:ogin\r\nX-Content-Type-Options:\x20nosniff\r\nX-Frame-Options:\x20DENY\
+SF:r\nContent-Security-Policy:\x20default-src\x20'self';\x20script-src\x20
+SF:'none';\x20frame-ancestors\x20'none';\x20form-action\x20'self'\r\nCross
+SF:-Origin-Opener-Policy:\x20same-origin\r\nCross-Origin-Resource-Policy:\
+SF:x20same-origin\r\nCross-Origin-Embedder-Policy:\x20require-corp\r\nPerm
+SF:issions-Policy:\x20camera=\(\),\x20microphone=\(\),\x20geolocation=\(\)
+SF:,\x20payment=\(\),\x20usb=\(\)\r\nVary:\x20Cookie\r\nSet-Cookie:\x20ses
+SF:sion=...(recortado)...;\x20Http
+SF:Only;\x20Path=/;\x20SameSite=Lax\r\nConnection:\x20close\r\n\r\n<!docty
+SF:pe\x20html>...")%r(RTSPRequest,1E9,"<!DOCTYPE\x20HTML>...<title>Error\x20res
+SF:ponse</title>...<p>Error\x20code:\x20400</p>...<p>Message:\x20Bad\x20request
+SF:\x20version\x20\('RTSP/1\.0'\)\.</p>...");
+MAC Address: 0A:00:27:00:00:00 (Unknown)
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 96.25 seconds
