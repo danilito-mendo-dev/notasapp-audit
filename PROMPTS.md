@@ -97,3 +97,12 @@ el modo debug y escucha en 127.0.0.1 por defecto; permite exponerla en la red so
 si se pide de forma explícita. No cambies ningún otro comportamiento. Explica qué
 cambiaste y por qué elimina la vulnerabilidad.
 ```
+
+### R-02 — CWE-1395: dependencias con CVE conocidos (13 CVE en Flask, Jinja2 y Werkzeug)
+```text
+Hallazgo CWE-1395: pip-audit reporta 13 CVE en Flask 3.0.0, Jinja2 3.1.2 y
+Werkzeug 3.0.1 (entre ellos CVE-2024-34069 en el depurador de Werkzeug, con el
+EPSS más alto). Actualiza requirements.txt a las versiones mínimas que corrigen
+todos los avisos, manteniendo las versiones exactas (==). No cambies el código.
+Explica qué cambiaste y cómo comprobarlo con pip-audit.
+```
