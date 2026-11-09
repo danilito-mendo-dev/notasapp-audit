@@ -3,6 +3,7 @@ NotasApp - Gestor de notas personales con Flask + SQLite (sin ORM).
 
 Ejecutar:  python app.py
 """
+import logging
 import os
 import re
 import secrets
@@ -69,6 +70,31 @@ def load_secret_key():
         os.chmod(path, 0o600)
     with open(path) as f:
         return f.read().strip()
+
+
+# ======================================================================
+# REGISTRO DE SEGURIDAD (CWE-778)
+# Los eventos de autenticación y administración se guardan en security.log
+# (fuera de git). Los datos del usuario se escriben con repr() para que no
+# puedan inyectar líneas falsas en el log (CWE-117).
+# ======================================================================
+SECURITY_LOG = os.path.join(BASE_DIR, "security.log")
+security_log = logging.getLogger("notasapp.security")
+security_log.setLevel(logging.INFO)
+security_log.propagate = False
+if not security_log.handlers:
+    _handler = logging.FileHandler(SECURITY_LOG, encoding="utf-8")
+    _handler.setFormatter(logging.Formatter("%(asctime)s %(levelname)s %(message)s"))
+    security_log.addHandler(_handler)
+
+
+def log_event(level, event, **fields):
+    try:
+        ip = request.remote_addr
+    except RuntimeError:  # fuera de una petición
+        ip = "-"
+    data = " ".join(f"{k}={str(v)[:80]!r}" for k, v in fields.items())
+    security_log.log(level, "%s ip=%s %s", event, ip, data)
 
 
 app = Flask(__name__)
@@ -200,6 +226,7 @@ def admin_required(view):
     @login_required
     def wrapped(*args, **kwargs):
         if not g.user["is_admin"]:
+            log_event(logging.WARNING, "admin_denied", user=g.user["username"], path=request.path)
             abort(403)
         return view(*args, **kwargs)
     return wrapped
@@ -219,6 +246,7 @@ def csrf_protect():
         sent = request.form.get("csrf_token", "")
         expected = session.get("csrf_token", "")
         if not expected or not secrets.compare_digest(sent, expected):
+            log_event(logging.WARNING, "csrf_invalid", path=request.path)
             abort(400, description="Token CSRF inválido. Recarga la página.")
 
 
@@ -319,6 +347,7 @@ def register():
             except sqlite3.IntegrityError:  # UNIQUE(username) violado
                 error = "Ese nombre de usuario ya existe."
             else:
+                log_event(logging.INFO, "register", user=username)
                 flash("Cuenta creada. Ya puedes iniciar sesión.", "success")
                 return redirect(url_for("login"))
         flash(error, "error")
@@ -338,7 +367,9 @@ def login():
         if user and check_password_hash(user["password_hash"], password):
             session.clear()  # evita "session fixation"
             session["user_id"] = user["id"]
+            log_event(logging.INFO, "login_ok", user=username)
             return redirect(url_for("index"))
+        log_event(logging.WARNING, "login_failed", user=username)
         # Mismo mensaje en ambos casos: no revelamos qué usuarios existen.
         flash("Usuario o contraseña incorrectos.", "error")
     return render_template("login.html")
@@ -557,6 +588,7 @@ def admin_delete_user(user_id):
     cur = db.execute("DELETE FROM users WHERE id = ?", (user_id,))  # CASCADE borra sus notas y comentarios
     db.commit()
     if cur.rowcount:
+        log_event(logging.WARNING, "admin_delete_user", admin=g.user["username"], deleted_id=user_id)
         flash("Usuario borrado junto con sus notas y comentarios.", "success")
     else:
         flash("Ese usuario no existe.", "error")

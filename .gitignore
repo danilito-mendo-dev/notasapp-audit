@@ -12,3 +12,4 @@ __pycache__/
 instance/
 .secret_key
 .admin_password
+security.log

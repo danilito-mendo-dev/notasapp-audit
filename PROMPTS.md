@@ -115,3 +115,14 @@ y en capturas de pantalla. Corrígelo para que no se muestre nunca en la salida:
 guárdala en un archivo legible solo por el dueño (permisos 600) que git ignore.
 No cambies ningún otro comportamiento. Explica qué cambiaste y por qué.
 ```
+
+### R-04 — F-08: CWE-778, los intentos de login fallidos no se registran
+```text
+Hallazgo F-08: CWE-778 (registro insuficiente). La app no deja constancia de los
+inicios de sesión fallidos ni de otras acciones sensibles: en la terminal solo
+aparece "POST /login 200", sin usuario ni resultado. Añade un registro de
+seguridad en un archivo (fuera de git) con fecha, IP, evento y usuario para:
+login correcto, login fallido, registro, acceso denegado a /admin, token CSRF
+inválido y borrado de usuarios por el admin. Evita la inyección en el log
+(CWE-117). No cambies ningún otro comportamiento. Explica qué cambiaste y por qué.
+```
