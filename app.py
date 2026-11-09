@@ -8,6 +8,8 @@ import os
 import re
 import secrets
 import sqlite3
+import threading
+import time
 from functools import wraps
 
 import nh3
@@ -310,6 +312,44 @@ def validate_note(title, content):
 
 
 # ======================================================================
+# LÍMITE DE INTENTOS DE LOGIN (CWE-307)
+# Tras MAX_LOGIN_FAILURES fallos para el mismo usuario desde la misma IP,
+# ese par queda bloqueado LOCKOUT_SECONDS. Se cuenta por (IP, usuario) para
+# que un atacante no pueda bloquear la cuenta de otra persona desde su IP.
+# ======================================================================
+MAX_LOGIN_FAILURES = 5
+LOCKOUT_SECONDS = 15 * 60
+_login_failures = {}            # (ip, usuario) -> [instantes de los fallos]
+_login_lock = threading.Lock()
+
+
+def _login_key(username):
+    return (request.remote_addr, username.lower())
+
+
+def login_blocked(username):
+    now = time.monotonic()
+    key = _login_key(username)
+    with _login_lock:
+        recent = [t for t in _login_failures.get(key, []) if now - t < LOCKOUT_SECONDS]
+        if recent:
+            _login_failures[key] = recent
+        else:
+            _login_failures.pop(key, None)
+        return len(recent) >= MAX_LOGIN_FAILURES
+
+
+def record_login_failure(username):
+    with _login_lock:
+        _login_failures.setdefault(_login_key(username), []).append(time.monotonic())
+
+
+def reset_login_failures(username):
+    with _login_lock:
+        _login_failures.pop(_login_key(username), None)
+
+
+# ======================================================================
 # AUTENTICACIÓN
 # ======================================================================
 USERNAME_RE = re.compile(r"^[A-Za-z0-9_]{3,30}$")
@@ -361,14 +401,20 @@ def login():
     if request.method == "POST":
         username = request.form.get("username", "").strip()
         password = request.form.get("password", "")
+        if login_blocked(username):
+            log_event(logging.WARNING, "login_blocked", user=username)
+            flash("Demasiados intentos fallidos. Espera 15 minutos e inténtalo de nuevo.", "error")
+            return render_template("login.html"), 429
         user = get_db().execute(
             "SELECT id, password_hash FROM users WHERE username = ?", (username,)
         ).fetchone()
         if user and check_password_hash(user["password_hash"], password):
             session.clear()  # evita "session fixation"
             session["user_id"] = user["id"]
+            reset_login_failures(username)
             log_event(logging.INFO, "login_ok", user=username)
             return redirect(url_for("index"))
+        record_login_failure(username)
         log_event(logging.WARNING, "login_failed", user=username)
         # Mismo mensaje en ambos casos: no revelamos qué usuarios existen.
         flash("Usuario o contraseña incorrectos.", "error")

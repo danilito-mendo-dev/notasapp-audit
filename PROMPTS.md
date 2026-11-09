@@ -126,3 +126,14 @@ login correcto, login fallido, registro, acceso denegado a /admin, token CSRF
 inválido y borrado de usuarios por el admin. Evita la inyección en el log
 (CWE-117). No cambies ningún otro comportamiento. Explica qué cambiaste y por qué.
 ```
+
+### R-05 — F-02: CWE-307, login sin límite de intentos
+```text
+Hallazgo F-02: CWE-307 en app.py, ruta /login. Se pueden probar contraseñas sin
+límite: 20 intentos fallidos seguidos devuelven 200 y después la contraseña
+correcta entra sin problema. Añade un límite: tras 5 fallos en 15 minutos,
+bloquea temporalmente nuevos intentos y responde 429, sin revelar si el usuario
+existe y sin permitir que un atacante bloquee la cuenta de otra persona. Sin
+dependencias nuevas. No cambies ningún otro comportamiento. Explica qué cambiaste
+y por qué.
+```
