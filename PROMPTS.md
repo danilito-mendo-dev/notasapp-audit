@@ -137,3 +137,11 @@ existe y sin permitir que un atacante bloquee la cuenta de otra persona. Sin
 dependencias nuevas. No cambies ningún otro comportamiento. Explica qué cambiaste
 y por qué.
 ```
+
+### R-06 — F-06: CWE-497, la cabecera Server revela Werkzeug y Python
+```text
+Hallazgo F-06: CWE-497. ZAP (alerta 10036) muestra que todas las respuestas llevan
+"Server: Werkzeug/3.0.1 Python/3.14.4", lo que revela el software y sus versiones.
+Haz que la app envíe una cabecera Server genérica sin versiones. No cambies
+ningún otro comportamiento. Explica qué cambiaste y por qué.
+```

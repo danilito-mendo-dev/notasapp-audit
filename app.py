@@ -26,6 +26,7 @@ from flask import (
 )
 from markupsafe import Markup
 from werkzeug.security import check_password_hash, generate_password_hash
+from werkzeug.serving import WSGIRequestHandler
 
 # ======================================================================
 # CONFIGURACIÓN (todo aquí, como pediste)
@@ -651,8 +652,16 @@ def http_error(err):
     return render_template("error.html", error=err), err.code
 
 
+class NoVersionRequestHandler(WSGIRequestHandler):
+    """El servidor de desarrollo anuncia "Werkzeug/x.y Python/x.y" en la
+    cabecera Server. Esto la sustituye por un nombre sin versiones (CWE-497)."""
+
+    def version_string(self):
+        return "NotasApp"
+
+
 # La base de datos se crea sola al importar/arrancar la app.
 init_db()
 
 if __name__ == "__main__":
-    app.run(host=HOST, port=PORT, debug=DEBUG)
+    app.run(host=HOST, port=PORT, debug=DEBUG, request_handler=NoVersionRequestHandler)
