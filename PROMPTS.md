@@ -86,4 +86,14 @@ Además, la IA introdujo cambios no solicitados:
 - **Controles no pedidos:** token CSRF en los formularios POST, consultas parametrizadas, cabeceras CSP / X-Frame-Options / X-Content-Type-Options, cookie SameSite=Lax y respuesta 404 para notas ajenas.
 
 ## Prompts de remediación (Parte 6)
-(se agregan uno por hallazgo)
+Un prompt por hallazgo, un commit por corrección. La IA que corrige es Claude (claude.ai, sesión de auditoría del 9-nov-2026).
+
+### R-01 — F-01: CWE-489 / CWE-605, depurador activo y app en 0.0.0.0
+```text
+Hallazgo F-01: CWE-489 (código de depuración activo) y CWE-605 en app.py, líneas 33-38.
+La app corre con DEBUG = True y HOST = "0.0.0.0", así que el depurador interactivo
+de Werkzeug (/console) es accesible desde toda la red local. Corrígelo: desactiva
+el modo debug y escucha en 127.0.0.1 por defecto; permite exponerla en la red solo
+si se pide de forma explícita. No cambies ningún otro comportamiento. Explica qué
+cambiaste y por qué elimina la vulnerabilidad.
+```

@@ -30,12 +30,14 @@ from werkzeug.security import check_password_hash, generate_password_hash
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATABASE = os.path.join(BASE_DIR, "notasapp.db")
 
-HOST = "0.0.0.0"   # 0.0.0.0 = accesible desde otras máquinas de tu red
+# Por defecto la app solo escucha en esta máquina (127.0.0.1).
+# Para exponerla en la red hay que pedirlo de forma explícita, p. ej.:
+#   NOTASAPP_HOST=0.0.0.0 python app.py   (y protegerla con el firewall)
+HOST = os.environ.get("NOTASAPP_HOST", "127.0.0.1")
 PORT = 5000
-# ⚠ El modo debug muestra un depurador interactivo (protegido por PIN) que
-# permite ejecutar código Python. Úsalo solo en una red de confianza y
-# NUNCA en un servidor público: pon DEBUG = False fuera de tu casa/clase.
-DEBUG = True
+# Depurador desactivado: el depurador interactivo de Werkzeug permite
+# ejecutar código Python en el servidor (CWE-489 / CWE-94).
+DEBUG = False
 
 # Administrador que se crea automáticamente la primera vez.
 ADMIN_USERNAME = "admin"
